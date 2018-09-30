@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: hyperchain.application.common:esdk:4.1.10-lc-v0.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/hyperchain/application/common/esdk/4.1.10-lc-v0.2/esdk-4.1.10-lc-v0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/hyperchain/application/common/esdk/4.1.10-lc-v0.2/esdk-4.1.10-lc-v0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/hyperchain/application/common/esdk/4.1.10-lc-v0.2/esdk-4.1.10-lc-v0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
