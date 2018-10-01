@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  * @author chenyufeng
  * @date 2018/4/25
  */
-public class RegexConstant {
+public class RegexConsts {
     /**
      * 最常规的金额校验，可以匹配正整数，小数点后两位。也就是大于等于0的正整数和两位小数点的小数，也就是可以传入金额为零。
      * 可匹配的：1，1.0，1.00，0，0.0， 0.00

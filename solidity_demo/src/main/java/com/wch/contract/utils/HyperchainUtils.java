@@ -5,7 +5,7 @@ import cn.hyperchain.sdk.rpc.HyperchainAPI;
 import cn.hyperchain.sdk.rpc.utils.Utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.wch.contract.constant.HyperchainConstant;
+import com.wch.contract.constant.HyperchainConsts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +33,14 @@ public class HyperchainUtils {
 
     //创建hyperchain连接
     public static HyperchainAPI getHyperchainAPI() throws Exception {
-        if (null == HyperchainConstant.HYPERCHAIN_API) {
+        if (null == HyperchainConsts.HYPERCHAIN_API) {
             synchronized (HyperchainUtils.class) {
-                if (null == HyperchainConstant.HYPERCHAIN_API) {
-                    HyperchainConstant.HYPERCHAIN_API = new HyperchainAPI();
+                if (null == HyperchainConsts.HYPERCHAIN_API) {
+                    HyperchainConsts.HYPERCHAIN_API = new HyperchainAPI();
                 }
             }
         }
-        return HyperchainConstant.HYPERCHAIN_API;
+        return HyperchainConsts.HYPERCHAIN_API;
     }
 
     /**

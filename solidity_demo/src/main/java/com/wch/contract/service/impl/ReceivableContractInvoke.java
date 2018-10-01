@@ -6,8 +6,8 @@ import cn.hyperchain.sdk.rpc.base.VMType;
 import cn.hyperchain.sdk.rpc.returns.ReceiptReturn;
 import com.hyperchain.ESDKConnection;
 import com.hyperchain.ESDKUtil;
-import com.wch.contract.constant.Code;
-import com.wch.contract.constant.HyperchainConstant;
+import com.wch.contract.constant.CodeEnum;
+import com.wch.contract.constant.HyperchainConsts;
 import com.wch.contract.exception.BlockChainException;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
@@ -44,10 +44,10 @@ public class ReceivableContractInvoke {
         LOGGER.info("合约方法入参为， companyName={},companyContactAddress={},accountAddr={},accoutType={},invokerAddr={}",
                 companyName, companyContactAddress, accountAddr, accoutType);
 
-        String contractAddr = HyperchainConstant.contract.getContractAddr();
-        String invokerAddr = HyperchainConstant.contract.getAddressAdmin();
-        String pwd = HyperchainConstant.contract.getPwdAdmin();
-        String accountJson = HyperchainConstant.contract.getPrikeyAdmin();
+        String contractAddr = HyperchainConsts.contract.getContractAddr();
+        String invokerAddr = HyperchainConsts.contract.getAddressAdmin();
+        String pwd = HyperchainConsts.contract.getPwdAdmin();
+        String accountJson = HyperchainConsts.contract.getPrikeyAdmin();
 
         //先对私钥的第二层加密进行解密
 //        accountJson = DesUtils.decryptSM4(accountJson);
@@ -66,7 +66,7 @@ public class ReceivableContractInvoke {
         List<Object> list = ESDKUtil.retDecodeAbi(contractMethodName, contractName, ret, abi);
         if (!CONTRACT_INVOKE_SUCCESS.equals(list.get(0).toString())){
             LOGGER.error("新建账户合约方法调用失败，错误码为 ： " + list.get(0).toString());
-            throw new BlockChainException(Code.CONTRACT_INVOKE_FAILED);
+            throw new BlockChainException(CodeEnum.CONTRACT_INVOKE_FAILED);
         }
         return list;
     }
@@ -102,7 +102,7 @@ public class ReceivableContractInvoke {
 
         if (!CONTRACT_INVOKE_SUCCESS.equals(list.get(0).toString())){
             LOGGER.error("新建仓单合约方法调用失败，错误码为 ： " + list.get(0).toString());
-            throw new BlockChainException(Code.CONTRACT_INVOKE_FAILED);
+            throw new BlockChainException(CodeEnum.CONTRACT_INVOKE_FAILED);
         }
         list.add(result.get(1));
         return list;
@@ -126,7 +126,7 @@ public class ReceivableContractInvoke {
 
         if (!CONTRACT_INVOKE_SUCCESS.equals(list.get(0).toString())){
             LOGGER.error("合约方法调用失败，错误码为 ： " + list.get(0).toString());
-            throw new BlockChainException(Code.CONTRACT_INVOKE_FAILED);
+            throw new BlockChainException(CodeEnum.CONTRACT_INVOKE_FAILED);
         }
         list.add(result.get(1));
         return list;

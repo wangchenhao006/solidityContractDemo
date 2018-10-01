@@ -2,7 +2,7 @@ package com.wch.contract.response;
 
 
 
-import com.wch.contract.constant.Code;
+import com.wch.contract.constant.CodeEnum;
 
 /**
  * Created by superlee on 2017/11/7.
@@ -12,8 +12,8 @@ import com.wch.contract.constant.Code;
 public final class BaseResultFactory {
 
 
-    public static BaseResult produceEmptyResult(Code code) {
-        return new BaseResult(code);
+    public static BaseResult produceEmptyResult(CodeEnum codeEnum) {
+        return new BaseResult(codeEnum);
     }
 
     public static BaseResult produceEmptyResult(int codeInt, String msg) {
@@ -24,8 +24,8 @@ public final class BaseResultFactory {
         return new BaseResult(codeInt, msg, data);
     }
 
-    public static BaseResult produceResult(Code code, Object data) {
-        return new BaseResult(code.getCode(), code.getMsg(), data);
+    public static BaseResult produceResult(CodeEnum codeEnum, Object data) {
+        return new BaseResult(codeEnum.getCode(), codeEnum.getMsg(), data);
     }
 
 

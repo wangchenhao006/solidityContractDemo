@@ -4,8 +4,8 @@ package com.wch.contract.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.hyperchain.ESDKUtil;
-import com.wch.contract.constant.Code;
-import com.wch.contract.constant.HyperchainConstant;
+import com.wch.contract.constant.CodeEnum;
+import com.wch.contract.constant.HyperchainConsts;
 import com.wch.contract.entity.Receivable;
 import com.wch.contract.entity.User;
 import com.wch.contract.mapper.ReceivableMapper;
@@ -45,7 +45,7 @@ public class ReceivableImpl implements IReceivable {
      */
     @Override
     public BaseResult createAccountInvoke(String companyName, String companySocialcreditCode, String companyContactAddress, int accoutType) throws Exception {
-        BaseResult baseResult = new BaseResult(Code.SUCCESS);
+        BaseResult baseResult = new BaseResult(CodeEnum.SUCCESS);
 
         List<String> list1 = HyperchainUtils.getAddrAndPriKeyEncryptSM4(companySocialcreditCode);
         String bcAddress = list1.get(0);
@@ -57,8 +57,8 @@ public class ReceivableImpl implements IReceivable {
         EntityWrapper ew=new EntityWrapper(user);
         List<User> users = userMapper.selectList(ew);
         if (users != null && users.size() > 0) {
-            baseResult.setCode(Code.USER_EXIST.getCode());
-            baseResult.setMessage(Code.USER_EXIST.getMsg());
+            baseResult.setCode(CodeEnum.USER_EXIST.getCode());
+            baseResult.setMessage(CodeEnum.USER_EXIST.getMsg());
             return baseResult;
         }
 
@@ -73,8 +73,8 @@ public class ReceivableImpl implements IReceivable {
                 return baseResult;
             }
             if ("000002".equals(list.get(0))) {
-                baseResult.setCode(Code.PARAMETER_SERVER_INVOKE_ERROR.getCode());
-                baseResult.setMessage(Code.PARAMETER_SERVER_INVOKE_ERROR.getMsg());
+                baseResult.setCode(CodeEnum.PARAMETER_SERVER_INVOKE_ERROR.getCode());
+                baseResult.setMessage(CodeEnum.PARAMETER_SERVER_INVOKE_ERROR.getMsg());
                 return baseResult;
             }
         }
@@ -104,7 +104,7 @@ public class ReceivableImpl implements IReceivable {
         String receivableToChainTxHash = " ";
         log.info("调用智能合约方法，信息上链");
         List<Object> list = ReceivableContractInvoke.createReceivableInvoke(user.getCompanyBcAddr(), toUser.getCompanyBcAddr(), parValue, receivableNum, validUntil, receivableToChainTxHash,
-               HyperchainConstant.contract.getContractAddr(),
+               HyperchainConsts.contract.getContractAddr(),
                 accountJson, user.getCompanySocialcreditCode().substring(0, 8));
         //todo 根据list中返回码封装不同状态
         //写到数据库
@@ -115,7 +115,7 @@ public class ReceivableImpl implements IReceivable {
         receivable.setReceivableNum(receivableNum);
         receivable.setValidUntil(validUntil);
         receivable.insert();
-        return BaseResultFactory.produceResult(Code.SUCCESS, list.get(list.size() - 1).toString());
+        return BaseResultFactory.produceResult(CodeEnum.SUCCESS, list.get(list.size() - 1).toString());
     }
 
     /**
@@ -142,25 +142,25 @@ public class ReceivableImpl implements IReceivable {
             Receivable receivable = new Receivable();
             receivable = receivables.get(0);
             if (!userId.equals(receivable.getOwnerId())){
-                return BaseResultFactory.produceResult(Code.RECEIPT_OWNER_ERROR, Code.RECEIPT_OWNER_ERROR.getMsg());
+                return BaseResultFactory.produceResult(CodeEnum.RECEIPT_OWNER_ERROR, CodeEnum.RECEIPT_OWNER_ERROR.getMsg());
             }
             //检查账单是否过期
             if (receivable.getValidUntil()>nowTime){
-                return BaseResultFactory.produceResult(Code.VALID_TIME_ERROR, Code.VALID_TIME_ERROR.getMsg());
+                return BaseResultFactory.produceResult(CodeEnum.VALID_TIME_ERROR, CodeEnum.VALID_TIME_ERROR.getMsg());
             }
             //转移账单
             log.info("调用智能合约方法，信息上链");
-            List<Object> list = ReceivableContractInvoke.transferReceivableInvoke(user.getCompanyBcAddr(), toUser.getCompanyBcAddr(), receivableNum, nowTime, " ", HyperchainConstant.contract.getContractAddr(), accountJson, user.getCompanySocialcreditCode().substring(0, 8));
+            List<Object> list = ReceivableContractInvoke.transferReceivableInvoke(user.getCompanyBcAddr(), toUser.getCompanyBcAddr(), receivableNum, nowTime, " ", HyperchainConsts.contract.getContractAddr(), accountJson, user.getCompanySocialcreditCode().substring(0, 8));
             log.debug("id={}",receivable.getId());
             //写到数据库
             receivable.setOwnerId(toId);
             receivable.setLastOwnerId(userId);
             receivable.updateById();
-            return BaseResultFactory.produceResult(Code.SUCCESS, list.get(list.size() - 1).toString());
+            return BaseResultFactory.produceResult(CodeEnum.SUCCESS, list.get(list.size() - 1).toString());
 
         }
         //todo 根据list中返回码封装不同状态
-       return BaseResultFactory.produceResult(Code.RECEIPT_NOT_EXSIT, Code.RECEIPT_NOT_EXSIT.getMsg());
+       return BaseResultFactory.produceResult(CodeEnum.RECEIVABLE_NOT_EXSIT, CodeEnum.RECEIVABLE_NOT_EXSIT.getMsg());
     }
 
     /**
@@ -182,9 +182,9 @@ public class ReceivableImpl implements IReceivable {
         Page<Receivable> receivableVOPage = page.setRecords(list);
 
         if (list != null && list.size() > 0) {
-            return BaseResultFactory.produceResult(Code.SUCCESS, receivableVOPage.getRecords());
+            return BaseResultFactory.produceResult(CodeEnum.SUCCESS, receivableVOPage.getRecords());
         }
-        return  BaseResultFactory.produceResult(Code.RECEIPT_NOT_EXSIT,Code.RECEIPT_NOT_EXSIT.getMsg());
+        return  BaseResultFactory.produceResult(CodeEnum.RECEIVABLE_NOT_EXSIT, CodeEnum.RECEIVABLE_NOT_EXSIT.getMsg());
     }
 
     /**
@@ -199,9 +199,9 @@ public class ReceivableImpl implements IReceivable {
         ew.eq("owner_id",userId).eq("receivable_num",receivableNum);
         List<Receivable> list = receivableMapper.selectList(ew);
         if (list != null && list.size() > 0) {
-            return BaseResultFactory.produceResult(Code.SUCCESS, list.get(0));
+            return BaseResultFactory.produceResult(CodeEnum.SUCCESS, list.get(0));
         }
-        return  BaseResultFactory.produceResult(Code.RECEIPT_NOT_EXSIT,Code.RECEIPT_NOT_EXSIT.getMsg());
+        return  BaseResultFactory.produceResult(CodeEnum.RECEIVABLE_NOT_EXSIT, CodeEnum.RECEIVABLE_NOT_EXSIT.getMsg());
     }
 
     /**
@@ -226,9 +226,9 @@ public class ReceivableImpl implements IReceivable {
         log.info("开始进行合约升级");
         String newBin = ESDKUtil.getContractBin(contractName);
         String newAbi = ESDKUtil.getContractAbi(contractName);
-        ESDKUtil.upgradeContract(HyperchainConstant.contract.getAddressAdmin(), HyperchainConstant.contract.getContractAddr(),
-                contractName, HyperchainConstant.contract.getPrikeyAdmin(), newAbi, newBin, true, HyperchainConstant.contract.getPwdAdmin());
+        ESDKUtil.upgradeContract(HyperchainConsts.contract.getAddressAdmin(), HyperchainConsts.contract.getContractAddr(),
+                contractName, HyperchainConsts.contract.getPrikeyAdmin(), newAbi, newBin, true, HyperchainConsts.contract.getPwdAdmin());
         log.info("合约升级成功");
-        return BaseResultFactory.produceResult(Code.SUCCESS,Code.SUCCESS.getMsg());
+        return BaseResultFactory.produceResult(CodeEnum.SUCCESS, CodeEnum.SUCCESS.getMsg());
     }
 }

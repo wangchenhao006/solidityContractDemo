@@ -1,6 +1,6 @@
 package com.wch.contract.response;
 
-import com.wch.contract.constant.Code;
+import com.wch.contract.constant.CodeEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -32,36 +32,36 @@ public final class BaseResult<T> implements Serializable {
     }
 
     // 与Code码交互
-    public BaseResult(Code code) {
+    public BaseResult(CodeEnum codeEnum) {
         this();
-        this.code = code.getCode();
-        this.message = code.getMsg();
+        this.code = codeEnum.getCode();
+        this.message = codeEnum.getMsg();
     }
 
     public void success(T object) {
-        this.code = Code.SUCCESS.getCode();
-        this.message = Code.SUCCESS.getMsg();
+        this.code = CodeEnum.SUCCESS.getCode();
+        this.message = CodeEnum.SUCCESS.getMsg();
         this.data = object;
     }
 
     /**
      * 返回结果代码code和消息msg，不需要返回值
      *
-     * @param code 结果类型
+     * @param codeEnum 结果类型
      */
-    public final void returnWithoutValue(Code code) {
-        this.code = code.getCode();
-        this.message = code.getMsg();
+    public final void returnWithoutValue(CodeEnum codeEnum) {
+        this.code = codeEnum.getCode();
+        this.message = codeEnum.getMsg();
     }
 
     /**
      * 返回结果代码code和消息msg，并返回值
      *
-     * @param code   结果类型
+     * @param codeEnum   结果类型
      * @param object 返回值
      */
-    public final void returnWithValue(Code code, T object) {
-        returnWithoutValue(code);
+    public final void returnWithValue(CodeEnum codeEnum, T object) {
+        returnWithoutValue(codeEnum);
         this.data = object;
     }
 

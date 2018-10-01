@@ -4,16 +4,13 @@ import cn.hyperchain.sdk.rpc.HyperchainAPI;
 import cn.hyperchain.sdk.rpc.Transaction.Transaction;
 import cn.hyperchain.sdk.rpc.base.VMType;
 import cn.hyperchain.sdk.rpc.returns.ReceiptReturn;
-import com.hyperchain.ESDKConnection;
 import com.hyperchain.ESDKUtil;
 import com.hyperchain.exception.ContractInvokeFailException;
 import com.hyperchain.exception.ESDKException;
 import com.hyperchain.exception.ReadFileException;
-import com.wch.contract.constant.HyperchainConstant;
+import com.wch.contract.constant.HyperchainConsts;
 import com.wch.contract.entity.Contract;
 
-import com.wch.contract.entity.Receivable;
-import com.wch.contract.entity.User;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -66,11 +63,11 @@ public class ContractInvokeImplTest {
 //        String accountAddress = "";
 //        int accountType = 0;
 //        ContractInvokeImpl.createAccountInvoke(companyName,companySocialcreditCode, companyContactAddress,accountAddress, accountType);
-        HyperchainConstant.contract = new Contract();
-        HyperchainConstant.contract.setAddressAdmin(superAddr);
-        HyperchainConstant.contract.setPrikeyAdmin(superPriKey);
-        HyperchainConstant.contract.setContractAddr(contractAddr);
-        HyperchainConstant.contract.setPwdAdmin(pwd);
+        HyperchainConsts.contract = new Contract();
+        HyperchainConsts.contract.setAddressAdmin(superAddr);
+        HyperchainConsts.contract.setPrikeyAdmin(superPriKey);
+        HyperchainConsts.contract.setContractAddr(contractAddr);
+        HyperchainConsts.contract.setPwdAdmin(pwd);
 
             List<Object> list = ReceivableContractInvoke.createAccountInvoke("中国银行", "91330110MA2B1A986", "杭州", addr1, 1);
             for (Object o : list) {
@@ -106,11 +103,11 @@ public class ContractInvokeImplTest {
 
     @Test
     public void createContractInvoke() throws Exception {
-        HyperchainConstant.contract = new Contract();
-        HyperchainConstant.contract.setAddressAdmin(superAddr);
-        HyperchainConstant.contract.setPrikeyAdmin(superPriKey);
-        HyperchainConstant.contract.setContractAddr(contractAddr);
-        HyperchainConstant.contract.setPwdAdmin(pwd);
+        HyperchainConsts.contract = new Contract();
+        HyperchainConsts.contract.setAddressAdmin(superAddr);
+        HyperchainConsts.contract.setPrikeyAdmin(superPriKey);
+        HyperchainConsts.contract.setContractAddr(contractAddr);
+        HyperchainConsts.contract.setPwdAdmin(pwd);
 
         HyperchainAPI hyperchainAPI = new HyperchainAPI();
         ReceiptReturn receivableReturn = hyperchainAPI.sendTx(createToChainTx(dataToChain(), addr1, priKey1, pwd1));

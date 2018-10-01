@@ -32,13 +32,13 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             List<Contract> contracts = new Contract().selectAll();
             if (contracts != null && contracts.size() > 0) {
 
-                HyperchainConstant.contract = contracts.get(0);
+                HyperchainConsts.contract = contracts.get(0);
                 if("true".equals(ESDKUtil.getHyperchainInfo("isUpgrade"))){
                     log.info("开始进行合约升级");
                     String newBin = ESDKUtil.getContractBin(contractName);
                     String newAbi = ESDKUtil.getContractAbi(contractName);
-                    ESDKUtil.upgradeContract(HyperchainConstant.contract.getAddressAdmin(),HyperchainConstant.contract.getContractAddr(),
-                            contractName,HyperchainConstant.contract.getPrikeyAdmin(),newAbi,newBin,true, HyperchainConstant.contract.getPwdAdmin());
+                    ESDKUtil.upgradeContract(HyperchainConsts.contract.getAddressAdmin(), HyperchainConsts.contract.getContractAddr(),
+                            contractName, HyperchainConsts.contract.getPrikeyAdmin(),newAbi,newBin,true, HyperchainConsts.contract.getPwdAdmin());
                     log.info("合约升级成功");
                 }
                 log.info("合约已经部署，不需要重新部署");
